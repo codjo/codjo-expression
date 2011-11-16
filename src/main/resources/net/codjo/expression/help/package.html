@@ -1,0 +1,31 @@
+<BODY>
+Ce package regroupe les classes spécialisées dans la documentation de {@link com.agf.expression.FunctionHolder}.
+
+<HR width="100%" SIZE=2>
+<STRONG>Utilisation du package</STRONG> <BR>
+
+Il est préférable de passer par le {@link com.agf.expression.FunctionManager#getAllFunctionsHelp()}
+pour avoir l'aide (utilisation du comportement par défaut).
+
+<P>
+<HR width="100%" SIZE=2>
+<STRONG>Extension</STRONG> <BR>
+<P>
+Le point d'extension de ce framework est symbolisé par l'interface FunctionHolderHelp. Pour définir une aide spécifique
+pour un FunctionHolder particulier il faut lui faire implanter l'interface FunctionHolderHelp (exemple
+{@link com.agf.expression.KernelFunctionHolder} ).
+</P>
+
+<B>NB</B> Si un FunctionHolder implémente l'interface FunctionHolderHelp alors il sera utilisé à la place du
+comportement par défaut.
+
+<HR width="100%" SIZE=2>
+<STRONG>Résumé des classes</STRONG> <BR>
+<UL>
+    <LI> {@link com.agf.expression.help.FunctionHolderHelp} : Interface principale
+    <LI> {@link com.agf.expression.help.DefaultFunctionHolderHelp} : Aide par défaut.
+    <LI> {@link com.agf.expression.help.UserFunctionHolderHelp} : Aide par défaut pour les UserFunctionHolder.
+</UL>
+
+</BODY>
+

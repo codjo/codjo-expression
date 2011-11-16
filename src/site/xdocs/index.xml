@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://cyber888.com/xsd/xdocs.xsd">
+
+    <properties>
+        <title>agf-expression</title>
+    </properties>
+
+    <body>
+        <section name="Description">
+            <p>
+				Cette librairie permet d'évaluer des expression avec une syntaxe proche de java.
+				L'implantation utilisée pour l'évaluation des expressions est dynamicJava. 
+            </p>
+        </section>
+        <section name="Nouveautés">
+            <p>
+                Liste des nouveautés :
+                <ul>
+                    <li>
+                        <a href="#Aide">Aide</a>
+                    </li>
+                    <li>
+                        <a href="#Expression">Expression</a>
+                    </li>
+                    <li>
+                        <a href="#Fonctions utilisateur">Fonctions utilisateur</a>
+                    </li>
+                    <li>
+                        <a href="#Classe FindUses">Classe FindUses</a>
+                    </li>
+                </ul>
+            </p>
+            <subsection name="Aide">
+                <p>
+				    Une nouvelle méthode plus complète pour l'aide sur les fonctions est mis en place cf
+                    <a href="apidocs/net/codjo/expression/help/package-summary.html">net.codjo.expression.help</a>.
+                    L'ancien moyen symbolisé par
+                    <a href="apidocs/net/codjo/expression/FunctionHolder.html#getAllFunctions()">FunctionHolder.getAllFunctions</a>
+                    est maintenant deprecated. Exemple d'utilisation avec le comportement par défaut:
+                </p>
+                <source>
+// Init
+manager = new FunctionManager();
+manager.addFunctionHolder(
+                    <b>myFunctionHolder</b>);
+
+// Recuperation de l'aide
+List list = manager.
+                    <b>getAllFunctionsHelp()</b>;
+
+// Utilisation
+FunctionHelp help = (FunctionHelp)list.get(0);
+System.out.println("name = " +
+                    <b>help.getFunctionName()</b>); // "my.lastDay"
+System.out.println("nb argument = " +
+                    <b>help.getParameterNumber()</b>); // 1
+System.out.println("tooltip = " +
+                    <b>help.getHelp()</b>); // "Usage : my.lastDay(chaîne)"
+                </source>
+                <p>
+                    <b>Customization !</b>
+                </p>
+                <p>
+				    Il est possible de surcharger le comportement par défaut de l'aide. Pour cela il suffit de faire
+                    implementer l'interface
+                    <a href="apidocs/net/codjo/expression/help/FunctionHolderHelp.html">FunctionHolderHelp</a> par son
+                    FunctionHolder (exemple
+                    <a href="xref/net/codjo/expression/KernelFunctionHolder.html">KernelFunctionHolder</a>). Résultat :
+                </p>
+                <source>
+List list = manager.getAllFunctionsHelp();
+
+assertHelp((FunctionHelp)list.get(6), "isNull", 1, "Usage : isNull(variable)");
+assertHelp((FunctionHelp)list.get(7), "isNotNull", 1, "Usage : isNotNull(variable)");
+                </source>
+            </subsection>
+            <subsection name="Expression">
+                <p>
+				La classe Expression permet de définir une seule expression (qui peux utiliser plusieurs valeur en entrée),
+                elle s'occupe de la creation du manager...
+                Exemple d'utilisation
+                </p>
+                <source>
+Expression expression =
+   new Expression("iif(Valeur == \"*\", null, Valeur)"
+     , Types.VARCHAR, null, Types.VARCHAR);
+
+expression.init();
+
+Object resultat = expression.compute("val");
+assertEquals("val", resultat);
+
+resultat = expression.compute("*");
+assertEquals(null, resultat);
+                </source>
+            </subsection>
+            <subsection name="Fonctions utilisateur">
+                <p>
+				Il est maintenant possible de définir des fonctions paramétrables par
+                l'utilisateur.
+                </p>
+                <source>
+UserFunctionHolder users = new UserFunctionHolder("users");
+users.addFunction(Types.INTEGER, "mySquare", "users.mySquare(entier)",
+    "public static int mySquare(int i) { return i * i; }");
+functionManager.addFunctionHolder(users);
+                </source>
+            </subsection>
+            <subsection name="Classe FindUses">
+                <p>
+                Cette classe permet de connaitre la liste des colonnes sources qui sont
+                réellement utilisées par les expressions.
+                </p>
+                <source>
+FindUses uses = new FindUses();
+uses.add("SRC_A + SRC_B");
+FindUses.Report report = uses.buildReport();
+Collection usedColumns = report.getUsedSourceColumns();
+// usedColumns contient le nom des colonnes sources (String)
+                </source>
+            </subsection>
+        </section>
+        <section name="Utilisation">
+            <p>
+	        	Voir
+                <a href="apidocs/index.html">la JavaDoc du package</a>.
+            </p>
+        </section>
+        <section name="ToDo">
+            <p>
+                TODO
+            </p>
+        </section>
+    </body>
+</document>

@@ -1,0 +1,95 @@
+<BODY>
+Ce package permet d'évaluer des expression avec une syntaxe proche de java.<P>
+
+L'implantation utilisée pour l'évaluation des expressions est dynamicJava. <P>
+
+<HR width="100%" SIZE=2>
+<STRONG>Utilisation du package</STRONG> <BR>
+L'utilisation se fait en 2 parties :
+    <OL>
+        <LI>Initialisation ,
+        <LI>Calcul.
+    </OL>
+
+
+<P/><B>Initialisation</B><BR/>
+Initialisation en 6 phases : declaration des fonctions accessibles
+, déclaration des données en entrée
+, déclaration des variables (optionnelle)
+, déclaration des données en sortie
+, déclaration des expressions
+, pré-compilation des expressions: <BR/>
+<PRE>
+    // Declaration des fonctions
+    functionManager = new FunctionManager();
+    functionManager.addFunctionHolder(new MyFunctionHolder());
+    UserFunctionHolder users = new UserFunctionHolder("users");
+    users.addFunction(Types.INTEGER, "mySquare", "users.mySquare(int)",
+        "public static int mySquare(int i) { return i * i; }");
+    functionManager.addFunctionHolder(users);
+    expManager = new ExpressionManager(functionManager);
+
+    // Declaration des données en entrée
+    Map srcCol = new HashMap();
+    srcCol.put("A", new Integer(Types.INTEGER));
+    ...
+    expManager.setSourceColumn(srcCol);
+
+    // Déclaration des variables
+    Map varCol = new HashMap();
+    varCol.put("VAR_A", new Integer(Types.INTEGER));
+    ...
+    expManager.setVarColumn(varCol);
+
+    // Declaration des données en sortie
+    Map destCol = new HashMap();
+    destCol.put("A", new Integer(Types.INTEGER));
+    ...
+    expManager.setDestColumn(destCol);
+
+    // Declaration des expressions
+    expManager.add("VAR_A", "SRC_A + SRC_B + SRC_B");
+    expManager.add("A", "VAR_A - SRC_B");
+    expManager.add("D", "utils.lastDay(\"200002xxxxx\")");
+    ...
+
+    // Pre-compilation
+    expManager.initExpressions();
+</PRE>
+
+
+<P/><B>Calcul</B><BR/>
+Calcul en 4 phases :
+  Positionnement des valeurs en entrée
+, Lancement du calcul
+, récuperation du résultat
+, Remise à zero du manager
+ <BR/>
+<PRE>
+    expManager.setFieldSourceValue("A", null);
+    expManager.setFieldSourceValue("B", new Integer(1));
+
+    expManager.compute();
+
+    Object valA = expManager.getComputedValue("A");
+
+    expManager.clear();
+</PRE>
+
+
+<P>
+<HR width="100%" SIZE=2>
+<STRONG>Extension</STRONG> <BR>
+Le point d'extension de ce framework est symbolisé par l'interface FunctionHolder (ou UserFunctionHolder)
+qui permet de définir de nouvelles fonctions accessibles aux expressions !
+<P>
+
+<HR width="100%" SIZE=2>
+<STRONG>Résumé des classes</STRONG> <BR>
+<UL>
+    <LI> ExpressionManager : Classe maitre
+    <LI> ...
+</UL>
+
+</BODY>
+
