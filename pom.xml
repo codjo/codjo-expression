@@ -8,7 +8,7 @@
 
     <parent>
         <groupId>net.codjo.pom</groupId>
-        <artifactId>codjo-pom-library</artifactId>
+        <artifactId>codjo-pom-external</artifactId>
         <version>SNAPSHOT</version>
     </parent>
     <groupId>net.codjo.expression</groupId>
@@ -23,16 +23,18 @@
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
         </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
     </dependencies>
 
     <!--
     | Project Information
     -->
 
-    <name>Lib &gt; Evaluateur d'expression</name>
-    <description>
-        Librairie pour l'evaluation d'expressions avec une syntaxe proche de Java.
-    </description>
+    <name>Lib &gt; Expression evaluator</name>
+    <description>Expression evaluator engine (syntax is similar to java).</description>
     <inceptionYear>2004</inceptionYear>
 
     <!--

@@ -4,14 +4,13 @@
  * Copyright (c) 2001 AGF Asset Management.
  */
 package net.codjo.expression;
-import net.codjo.expression.help.FunctionHelp;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 import junit.framework.TestCase;
+import net.codjo.expression.help.FunctionHelp;
 /**
  * Gère une liste de fonction
- *
  */
 public class FunctionManagerTest extends TestCase {
     private FunctionManager manager;
@@ -37,7 +36,7 @@ public class FunctionManagerTest extends TestCase {
 
         assertEquals("Les fonctions definies dans le manager "
                      + "sont les fonctions par défaut plus celles des Holder declarés.", 0,
-                                                                                         all.size());
+                     all.size());
     }
 
 
@@ -77,16 +76,26 @@ public class FunctionManagerTest extends TestCase {
     }
 
 
-    public void test_helpFunctions_withUserFunctionHolder()
-          throws Exception {
+    public void test_helpFunctions_withUserFunctionHolder() throws Exception {
         UserFunctionHolder userHolder = new UserFunctionHolder("user");
-        userHolder.addFunction(Types.BIT, "afoo", "Usage : mon aide",
-                               "public boolean afoo()...");
+        userHolder.addFunction(Types.BIT, "afoo", "Usage : mon aide", "public boolean afoo()...");
         manager.addFunctionHolder(userHolder);
 
-        List functionList = manager.getAllFunctionsHelp();
+        List<FunctionHelp> functionList = manager.getAllFunctionsHelp();
         assertEquals(9, functionList.size());
-        assertHelp((FunctionHelp)functionList.get(6), "user.afoo", 0, "Usage : mon aide");
+
+        assertHelp(getHelpFor(functionList, "user.afoo"), "user.afoo", 0, "Usage : mon aide");
+    }
+
+
+    private static FunctionHelp getHelpFor(List<FunctionHelp> functionList, String name) {
+        for (FunctionHelp functionHelp : functionList) {
+            if (name.equalsIgnoreCase(functionHelp.getFunctionName())) {
+                return functionHelp;
+            }
+        }
+        fail("user.afoo can't be found");
+        return null;
     }
 
 
